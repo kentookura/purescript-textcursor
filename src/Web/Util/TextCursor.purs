@@ -1,15 +1,37 @@
 module Web.Util.TextCursor
-  ( TextCursor(..), Direction(..)
-  , mkTextCursor, genTextCursor
-  , content, length, null, empty, single
-  , _before, _selected, _after, _all, _nonselected
-  , atStart, atEnd, allSelected
-  , isCursor, cursorAtStart, cursorAtEnd
-  , isSelection, selectionAtStart, selectionAtEnd
-  , selectAll, placeCursorAtStart, placeCursorAtEnd
-  , modifySelected, modifyAll
-  , appendl, appendr, insert
-  ) where
+  ( TextCursor(..)
+  , _after
+  , _all
+  , _before
+  , _nonselected
+  , _selected
+  , allSelected
+  , appendl
+  , appendr
+  , atEnd
+  , atStart
+  , content
+  , cursorAtEnd
+  , cursorAtStart
+  , Direction(..)
+  , empty
+  , genTextCursor
+  , insert
+  , isCursor
+  , isSelection
+  , length
+  , mkTextCursor
+  , modifyAll
+  , modifySelected
+  , null
+  , placeCursorAtEnd
+  , placeCursorAtStart
+  , selectAll
+  , selectionAtEnd
+  , selectionAtStart
+  , single
+  )
+  where
 
 import Prelude
 
@@ -22,7 +44,7 @@ import Data.Lens.Types (Setter')
 import Data.Newtype (class Newtype)
 import Data.String (length, null) as S
 import Data.String.Gen (genUnicodeString)
-import Data.Symbol (SProxy(..))
+import Type.Proxy (Proxy(..))
 
 -- | Direction ADT. None is the default. See
 -- | https://www.w3.org/TR/html5/forms.html#dom-textarea/input-selectiondirection
@@ -132,20 +154,20 @@ single l v = l .~ v $ empty
 -- | Lens for the text before the selection. Empty if the cursor is at the
 -- | beginning or the selection starts from the beginning.
 _before :: Lens' TextCursor String
-_before = _Newtype <<< prop (SProxy :: SProxy "before")
+_before = _Newtype <<< prop (Proxy :: Proxy "before")
 
 -- | Lens for the text that is selected. Empty if nothing is selected.
 _selected :: Lens' TextCursor String
-_selected = _Newtype <<< prop (SProxy :: SProxy "selected")
+_selected = _Newtype <<< prop (Proxy :: Proxy "selected")
 
 -- | Lens for the text after the selection. Empty if the cursor or selection
 -- | reaches the end.
 _after :: Lens' TextCursor String
-_after = _Newtype <<< prop (SProxy :: SProxy "after")
+_after = _Newtype <<< prop (Proxy :: Proxy "after")
 
 -- | Lens for the direction of selection.
 _direction :: Lens' TextCursor Direction
-_direction = _Newtype <<< prop (SProxy :: SProxy "direction")
+_direction = _Newtype <<< prop (Proxy :: Proxy "direction")
 
 -- | Lens for traversing/setting all three fields.
 _all :: Traversal' TextCursor String
